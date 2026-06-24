@@ -4,10 +4,9 @@ Get from zero to your first authenticated call against the RiseUp API in about f
 
 ## 1. Create a Personal Access Token
 
-1. Log in to the RiseUp web app at https://input.riseup.co.il.
-2. Open the **Developer Tokens** page (`/developer/tokens`).
-3. Click **Create new token**, give it a label (e.g. `Claude Desktop on my laptop`), and confirm.
-4. **Copy the token immediately.** It's shown only once. It looks like:
+1. Visit https://input.riseup.co.il/developer/tokens.
+2. Click **Create new token**, give it a label (e.g. `Claude Desktop on my laptop`), and confirm.
+3. **Copy the token immediately.** It's shown only once. It looks like:
 
    ```
    riseup_pat_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
