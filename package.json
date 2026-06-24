@@ -1,0 +1,49 @@
+{
+  "name": "@riseup-oss/mcp",
+  "version": "0.1.0",
+  "description": "Official MCP server for RiseUp — programmatic read-only access to your own cashflow data from Claude Desktop, Base44, the Claude Agent SDK, and other MCP clients.",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "riseup-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/riseup-oss/mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/riseup-oss/mcp/issues"
+  },
+  "homepage": "https://github.com/riseup-oss/mcp#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.29.0",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@types/jest": "29.5.14",
+    "@types/node": "20.19.41",
+    "jest": "29.7.0",
+    "ts-jest": "29.4.11",
+    "typescript": "5.9.3"
+  },
+  "overrides": {
+    "hono": "4.12.26"
+  }
+}
