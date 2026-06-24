@@ -26,7 +26,7 @@ Requires Node.js 18+.
 
 ### 1. Create a Personal Access Token
 
-Log into the [RiseUp web app](https://input.riseup.co.il) and visit the [developer tokens page](https://input.riseup.co.il/developer/tokens). Create a token, pick the `budget:read` scope, and copy the token. **It is shown only once.**
+Visit RiseUp's [developer tokens page](https://input.riseup.co.il/developer/tokens), create a token, pick the `budget:read` scope, and copy it. **It is shown only once.**
 
 The token looks like `riseup_pat_<32-bytes-base64url>`.
 
@@ -50,7 +50,7 @@ Add to your `claude_desktop_config.json` (on macOS: `~/Library/Application Suppo
 }
 ```
 
-Restart Claude Desktop. The `get_budget` tool should appear.
+**Fully quit Claude Desktop (Cmd+Q on macOS) and reopen** — closing the window isn't enough. Claude Desktop reads `claude_desktop_config.json` only at startup, so any change to `RISEUP_PAT` or other env values needs a full restart to take effect. After restart, the `get_budget` tool should appear.
 
 #### Claude Agent SDK
 

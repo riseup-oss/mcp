@@ -28,13 +28,19 @@ describe('loadConfigFromEnv', () => {
     expect(loadConfigFromEnv().apiBase).toBe('http://localhost:3000');
   });
 
-  it('throws when RISEUP_PAT is missing', () => {
-    expect(() => loadConfigFromEnv()).toThrow(/RISEUP_PAT environment variable is required/);
+  it('throws a "not set" error when RISEUP_PAT is undefined', () => {
+    expect(() => loadConfigFromEnv()).toThrow(/RISEUP_PAT environment variable is not set/);
   });
 
-  it('throws when RISEUP_PAT does not have the riseup_pat_ prefix', () => {
-    process.env.RISEUP_PAT = 'something-else';
-    expect(() => loadConfigFromEnv()).toThrow(/must start with "riseup_pat_"/);
+  it('throws a distinct "is empty" error when RISEUP_PAT is set to an empty string', () => {
+    process.env.RISEUP_PAT = '';
+    expect(() => loadConfigFromEnv()).toThrow(/RISEUP_PAT environment variable is empty/);
+  });
+
+  it('throws a "does not look like a RiseUp token" error when prefix is wrong, including received prefix', () => {
+    process.env.RISEUP_PAT = 'sk-someothertokenformat-1234567890';
+    expect(() => loadConfigFromEnv()).toThrow(/doesn't look like a RiseUp token/);
+    expect(() => loadConfigFromEnv()).toThrow(/got "sk-someother…"/);
   });
 
   it('throws when RISEUP_API_BASE is plain http on a non-local host', () => {
@@ -138,8 +144,36 @@ describe('riseupGet', () => {
     await expect(riseupGet(CONFIG, '/api/external/budget/current')).rejects.toThrow(/PAT was rejected/);
   });
 
-  it('throws a clear 403 message when scopes are insufficient', async () => {
+  it('throws a generic 403 message when the response body is empty', async () => {
     jest.spyOn(globalThis, 'fetch').mockResolvedValueOnce(new Response('', { status: 403 }));
+    await expect(riseupGet(CONFIG, '/api/external/budget/current')).rejects.toThrow(/lacks the required scope/);
+  });
+
+  it('surfaces "required" scope from 403 JSON body in the error message', async () => {
+    jest.spyOn(globalThis, 'fetch').mockResolvedValueOnce(new Response(
+      JSON.stringify({ required: 'budget:read', availableOnToken: ['transactions:read'] }),
+      { status: 403, headers: { 'content-type': 'application/json' } },
+    ));
+    await expect(riseupGet(CONFIG, '/api/external/budget/current')).rejects.toThrow(
+      /Missing scope: budget:read.*Your token has: transactions:read/,
+    );
+  });
+
+  it('handles 403 JSON body with availableOnToken=[] (no scopes)', async () => {
+    jest.spyOn(globalThis, 'fetch').mockResolvedValueOnce(new Response(
+      JSON.stringify({ required: 'budget:read', availableOnToken: [] }),
+      { status: 403, headers: { 'content-type': 'application/json' } },
+    ));
+    await expect(riseupGet(CONFIG, '/api/external/budget/current')).rejects.toThrow(
+      /Missing scope: budget:read.*token has no scopes/,
+    );
+  });
+
+  it('falls back to generic 403 message when body is not valid JSON', async () => {
+    jest.spyOn(globalThis, 'fetch').mockResolvedValueOnce(new Response(
+      '<html><body>Forbidden</body></html>',
+      { status: 403 },
+    ));
     await expect(riseupGet(CONFIG, '/api/external/budget/current')).rejects.toThrow(/lacks the required scope/);
   });
 

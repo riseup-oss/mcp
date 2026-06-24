@@ -1,4 +1,5 @@
 const DEFAULT_API_BASE = 'https://input.riseup.co.il';
+const TOKENS_URL = 'https://input.riseup.co.il/developer/tokens';
 const PAT_PREFIX = 'riseup_pat_';
 const TRUSTED_HOST_ROOT = 'riseup.co.il';
 const TRUSTED_HOST_SUFFIX = `.${TRUSTED_HOST_ROOT}`;
@@ -16,13 +17,20 @@ export type RiseupClientConfig = {
 
 export function loadConfigFromEnv(): RiseupClientConfig {
   const pat = process.env.RISEUP_PAT;
-  if (!pat) {
+  if (pat === undefined) {
     throw new Error(
-      'RISEUP_PAT environment variable is required. Create a token at https://input.riseup.co.il/developer/tokens',
+      `RISEUP_PAT environment variable is not set. Add it to your MCP client config (e.g. claude_desktop_config.json under mcpServers.<name>.env.RISEUP_PAT). Create a token at ${TOKENS_URL}`,
+    );
+  }
+  if (pat === '') {
+    throw new Error(
+      `RISEUP_PAT environment variable is empty. Set it to the actual token value, not an empty string. Create a token at ${TOKENS_URL}`,
     );
   }
   if (!pat.startsWith(PAT_PREFIX)) {
-    throw new Error(`RISEUP_PAT must start with "${PAT_PREFIX}" — got a token that looks malformed.`);
+    throw new Error(
+      `RISEUP_PAT doesn't look like a RiseUp token — expected prefix "${PAT_PREFIX}", got "${pat.slice(0, 12)}…". Each token is shown only once at ${TOKENS_URL} — make sure you copied the full value.`,
+    );
   }
   const rawBase = process.env.RISEUP_API_BASE ?? DEFAULT_API_BASE;
   const apiBase = _validateApiBase(rawBase).replace(/\/$/, '');
@@ -85,14 +93,37 @@ export async function riseupGet<T>(config: RiseupClientConfig, path: string): Pr
     throw new Error(`Network error calling ${url}: ${detail}`);
   }
   if (response.status === 401) {
-    throw new Error('RiseUp PAT was rejected (401). Token may be expired or revoked.');
+    throw new Error(`RiseUp PAT was rejected (401). Token may be expired or revoked. Recreate at ${TOKENS_URL}`);
   }
   if (response.status === 403) {
-    throw new Error('RiseUp PAT lacks the required scope (403). Recreate the token with the right scopes selected.');
+    const detail = await _parse403Detail(response);
+    throw new Error(`RiseUp PAT lacks the required scope (403).${detail} Recreate the token with the right scopes at ${TOKENS_URL}`);
   }
   if (!response.ok) {
     const body = await response.text();
     throw new Error(`RiseUp API ${response.status}: ${body.slice(0, 200)}`);
   }
   return (await response.json()) as T;
+}
+
+async function _parse403Detail(response: Response): Promise<string> {
+  const body = await response.text();
+  try {
+    const parsed = JSON.parse(body) as { required?: string; availableOnToken?: string[]; error?: string };
+    if (parsed?.required) {
+      let detail = ` Missing scope: ${parsed.required}.`;
+      if (Array.isArray(parsed.availableOnToken)) {
+        detail += parsed.availableOnToken.length > 0
+          ? ` Your token has: ${parsed.availableOnToken.join(', ')}.`
+          : ' Your token has no scopes.';
+      }
+      return detail;
+    }
+    if (parsed?.error) {
+      return ` ${parsed.error}.`;
+    }
+  } catch {
+    // body wasn't JSON — fall through to no detail
+  }
+  return '';
 }
