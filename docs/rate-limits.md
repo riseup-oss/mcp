@@ -4,14 +4,14 @@ The RiseUp API enforces two rate limits per token, applied in series. Both windo
 
 | Window | Limit |
 |---|---|
-| Per minute | **10 requests** |
-| Per day | **100 requests** |
+| Per minute | **60 requests** |
+| Per day | **1000 requests** |
 
 A request that exceeds either window gets rejected with `429 Too Many Requests` and a `Retry-After` header telling you how long to wait.
 
 ## Why two windows
 
-The per-minute cap controls burst rate so a runaway client (or an LLM in a tight loop) can't hammer the API. The per-day cap controls aggregate usage — RiseUp data doesn't change that fast, and most legitimate use cases need far fewer than 100 calls a day.
+The per-minute cap controls burst rate so a runaway client (or an LLM in a tight loop) can't hammer the API. The per-day cap controls aggregate usage — RiseUp data doesn't change that fast, and most legitimate use cases need far fewer than 1000 calls a day.
 
 If you regularly hit either limit with legitimate traffic, get in touch — we can revisit the numbers.
 
