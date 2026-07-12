@@ -75,13 +75,14 @@ const claude = new Claude({
 | `RISEUP_PAT` | yes | — | Your `riseup_pat_…` Personal Access Token |
 | `RISEUP_API_BASE` | no | `https://input.riseup.co.il` | Override for staging / dev environments |
 
-## Tools (v0.1)
+## Tools (v0.2)
 
-| Tool | Scope required | Description |
+| Tool | Scope | Description |
 |---|---|---|
-| `get_budget` | `budget:read` | Get the customer's budget for a given month. Accepts `YYYY-MM`, `current`, or `previous`. |
+| `get_budget` | `budget:read` | Get the customer's budget for a given month. Accepts `YYYY-MM`, `current`, or `previous`. Returns envelopes (categories) with planned amounts and their actual transactions. |
+| `get_transactions` | `budget:read` | Get individual cashflow transactions filtered by `cashflowMonth` (YYYY-MM), `transactionDate` (YYYY-MM-DD), or `businessName` (case-insensitive substring). Filters combine with AND. |
 
-More tools (`get_transactions`, `get_balances`, `get_cashflow`) coming in v0.2+.
+More tools (`get_balances`, `get_cashflow`) coming in future releases.
 
 ## Documentation
 

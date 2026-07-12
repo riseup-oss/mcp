@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-07-12
+
+### Added
+
+- New tool: `get_transactions` — filter cashflow transactions by
+  `cashflowMonth`, `transactionDate`, or `businessName` (case-insensitive
+  substring). Backed by a new RiseUp API endpoint
+  (`/api/external/transactions`) that queries stored transactions
+  directly rather than reconstructing them from budgets — fast for
+  targeted searches like "restaurant transactions in June". Same
+  `budget:read` scope as `get_budget`; existing tokens work without
+  change.
+
+### Changed
+
+- Extended `get_budget` tool description to document the response shape
+  (envelope types, budget vs actuals, currency, date semantics). Same tool,
+  same response — just clearer context for LLMs choosing when and how to
+  use it, and for humans reading the tool schema.
+
+### Notes
+
+- `accountNickname` is included in `get_transactions` responses the same
+  way as in `get_budget` — the backing endpoint enriches transactions
+  with the customer's account nicknames. The field is absent when the
+  customer hasn't set a nickname for the account.
+- `transactionDate` and `billingDate` in `get_transactions` responses are
+  ISO datetime strings (always UTC midnight, e.g.
+  `2026-06-15T00:00:00.000Z`); the `transactionDate` *filter parameter*
+  takes plain `YYYY-MM-DD`.
+
 ## [0.1.1] - 2026-06-24
 
 ### Fixed
