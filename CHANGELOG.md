@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-07-19
+
+### Added
+
+- Both `get_transactions` and `get_budget` now expose `accountNumberHash`
+  on every transaction / actual — a stable, opaque, per-account 6-character
+  identifier. Same account → same hash across every response. Use to
+  distinguish transactions from multiple accounts under the same `source`,
+  e.g. two different Isracard cards on the same customer. Not a
+  cryptographic hash and not the raw account number.
+
 ## [0.2.0] - 2026-07-12
 
 ### Added
