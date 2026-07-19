@@ -54,6 +54,7 @@ Response shape:
       isIncome: boolean,                     // true = income, false = expense
       amount: number,                        // money value in ILS (absolute); use isIncome to determine direction
       accountNickname: string | null,        // customer-defined label for the source account, set in the RiseUp app; null if the customer hasn't set one
+      accountNumberHash: string | null,      // stable 6-character opaque identifier for the source account. Use to distinguish transactions across multiple accounts under the same \`source\` (e.g. two different Isracard cards on the same customer). Same account → same hash across every response. Not a cryptographic hash and not the raw account number. Null when no matching identifier is available.
       isInstallment: boolean,                // true if part of a payment plan
       installmentNumber: number,             // current installment index (only meaningful when isInstallment)
       totalNumberOfInstallments: number,     // total planned installments (only meaningful when isInstallment)

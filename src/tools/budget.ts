@@ -47,6 +47,7 @@ Response shape:
                                                // exactly one of billingAmount / incomeAmount is non-null per transaction
           originalAmount: number,              // amount in original currency / before conversions
           accountNickname: string | null,      // customer-defined label for the source account, set in the RiseUp app; null if the customer hasn't set one
+          accountNumberHash: string | null,    // stable 6-character opaque identifier for the source account. Use to distinguish actuals across multiple accounts under the same \`source\` (e.g. two different Isracard cards on the same customer). Same account → same hash across every response. Not a cryptographic hash and not the raw account number. Null when no matching identifier is available.
           isInstallment: boolean,              // true when part of a payment plan
           paymentNumber: number,               // 1..totalNumberOfPayments (installments only)
           totalNumberOfPayments: number,       // total installments (installments only)
