@@ -62,6 +62,16 @@ describe('fetchTransactions', () => {
     expect(url).toContain('businessName=restaurant');
   });
 
+  it('sends maxTransactions as a query param', async () => {
+    const fetchSpy = jest.spyOn(globalThis, 'fetch').mockResolvedValueOnce(new Response(
+      '{"transactions":[]}', { status: 200 },
+    ));
+    await fetchTransactions({ cashflowMonth: '2026-06', maxTransactions: 50 }, CONFIG);
+    expect(fetchSpy.mock.calls[0][0]).toBe(
+      'http://localhost:3000/api/external/transactions?cashflowMonth=2026-06&maxTransactions=50',
+    );
+  });
+
   it('URL-encodes businessName with special characters', async () => {
     const fetchSpy = jest.spyOn(globalThis, 'fetch').mockResolvedValueOnce(new Response(
       '{"transactions":[]}', { status: 200 },

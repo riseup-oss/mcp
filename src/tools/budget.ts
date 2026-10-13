@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { loadConfigFromEnv, riseupGet, type RiseupClientConfig } from '../client.js';
+import { jsonToolResult } from './tool-result.js';
 
 const BUDGET_DATE = z.string().regex(/^(\d{4}-\d{2}|current|previous)$/, {
   message: 'Use "YYYY-MM" (e.g. "2026-05"), "current", or "previous"',
@@ -79,15 +80,7 @@ All money fields are in Israeli shekels (ILS). On each actual, \`billingAmount\`
       },
     },
     async ({ date }) => {
-      const budget = await fetchBudget(date, loadConfigFromEnv());
-      return {
-        content: [
-          {
-            type: 'text' as const,
-            text: JSON.stringify(budget, null, 2),
-          },
-        ],
-      };
+      return jsonToolResult(await fetchBudget(date, loadConfigFromEnv()));
     },
   );
 }
