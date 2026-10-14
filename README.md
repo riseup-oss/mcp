@@ -26,7 +26,18 @@ Requires Node.js 18+.
 
 ### 1. Create a Personal Access Token
 
-Visit RiseUp's [developer tokens page](https://input.riseup.co.il/developer/tokens), create a token, pick the `budget:read` scope, and copy it. **It is shown only once.**
+Visit RiseUp's [developer tokens page](https://input.riseup.co.il/developer/tokens) and create a token. While creating it, select the scopes it should have — select one or more of:
+
+| Scope | Shown on the page as | Enables |
+|---|---|---|
+| `budget:read` | תקציב | `get_budget`, `get_transactions` |
+| `balances:read` | יתרות בנק | `get_current_bank_balances_data`, `get_historical_bank_balances_data` |
+| `mortgages:read` | משכנתא | `get_mortgages_data` |
+| `benchmarks:read` | השוואה ללקוחות דומים | `get_benchmarks_data` |
+
+A tool called without its scope fails with a `403` that names the missing scope. Scopes can't be added to an existing token — to use more tools later, create a new token with the scopes you need.
+
+Copy the token. **It is shown only once.**
 
 The token looks like `riseup_pat_<32-bytes-base64url>`.
 
@@ -75,14 +86,18 @@ const claude = new Claude({
 | `RISEUP_PAT` | yes | — | Your `riseup_pat_…` Personal Access Token |
 | `RISEUP_API_BASE` | no | `https://input.riseup.co.il` | Override for staging / dev environments |
 
-## Tools (v0.2)
+## Tools (v0.4)
 
 | Tool | Scope | Description |
 |---|---|---|
 | `get_budget` | `budget:read` | Get the customer's budget for a given month. Accepts `YYYY-MM`, `current`, or `previous`. Returns envelopes (categories) with planned amounts and their actual transactions. |
-| `get_transactions` | `budget:read` | Get individual cashflow transactions filtered by `cashflowMonth` (YYYY-MM), `transactionDate` (YYYY-MM-DD), or `businessName` (case-insensitive substring). Filters combine with AND. |
+| `get_transactions` | `budget:read` | Get individual cashflow transactions filtered by `cashflowMonth` (YYYY-MM), `transactionDate` (YYYY-MM-DD), or `businessName` (case-insensitive substring), latest first. Filters combine with AND; `maxTransactions` (default 10000) keeps only the latest N. Each transaction includes its category, expense type, exclusion flag, and your comments / payment-app memo. See the [transactions reference](./docs/reference/transactions.md). |
+| `get_mortgages_data` | `mortgages:read` | Get the customer's mortgage: remaining balance, interest and principal, monthly payment, parts (tracks), last month's mortgage payments in the cashflow, and potential savings with RiseUp's mortgage product. See the [mortgages reference](./docs/reference/mortgages.md). |
+| `get_current_bank_balances_data` | `balances:read` | Get the current balance of each bank account, with when it was last updated. See the [current balances reference](./docs/reference/current-balances.md). |
+| `get_historical_bank_balances_data` | `balances:read` | Get daily bank balances over the last 1–90 days per account, with min / max / average. See the [historical balances reference](./docs/reference/historical-balances.md). |
+| `get_benchmarks_data` | `benchmarks:read` | Compare the customer's spending on eating out, groceries (כלכלה) and electricity with similar RiseUp customers. See the [benchmarks reference](./docs/reference/benchmarks.md). |
 
-More tools (`get_balances`, `get_cashflow`) coming in future releases.
+The balance tools need a token with the `balances:read` scope, `get_mortgages_data` needs `mortgages:read` and `get_benchmarks_data` needs `benchmarks:read`; `get_budget` and `get_transactions` work with `budget:read`. More tools (`get_cashflow`) coming in future releases.
 
 ## Documentation
 
@@ -93,6 +108,11 @@ Longer-form docs live in [`docs/`](./docs):
 - [Rate limits](./docs/rate-limits.md) — limits, the `429` shape, how to handle it
 - [Errors](./docs/errors.md) — the full error catalog
 - [Budget reference](./docs/reference/budget.md) — the three budget endpoints in detail
+- [Transactions reference](./docs/reference/transactions.md) — filters, ordering, response fields, free-text sanitization
+- [Mortgages reference](./docs/reference/mortgages.md) — mortgage details, cashflow payments, savings potential
+- [Current balances reference](./docs/reference/current-balances.md) — current balance per bank account
+- [Historical balances reference](./docs/reference/historical-balances.md) — daily balances over up to 90 days
+- [Benchmarks reference](./docs/reference/benchmarks.md) — spending compared with similar customers
 
 ## Security
 

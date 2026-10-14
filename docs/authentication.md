@@ -26,11 +26,14 @@ Every request to `/api/external/*` requires this header. Requests without a vali
 
 PATs can only be created from inside a logged-in web session at https://input.riseup.co.il/developer/tokens. This is intentional — minting a token requires the same 2-factor authentication you use to log in, so a stolen API key alone can't be used to mint more tokens.
 
-When you create a token you choose its **scope**. Today the only available scope is:
+When you create a token you choose its **scopes**:
 
-- **`budget:read`** — read access to your monthly budget data.
+- **`budget:read`** — read access to your monthly budget data and its transactions.
+- **`balances:read`** — read access to your current and historical bank account balances.
+- **`mortgages:read`** — read access to your mortgage data.
+- **`benchmarks:read`** — read access to how your spending compares with similar customers.
 
-More scopes will be added as we expose additional endpoints. A token you create today with `budget:read` will keep working for the budget endpoints; it doesn't need to be re-issued when new scopes become available.
+More scopes will be added as we expose additional endpoints. A token you create today with `budget:read` will keep working for the endpoints it covers; it doesn't need to be re-issued when new scopes become available.
 
 ## Token lifetime
 

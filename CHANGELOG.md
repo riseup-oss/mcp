@@ -5,6 +5,51 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-10-12
+
+### Added
+
+- New tool: `get_mortgages_data` (`mortgages:read`, a new scope) —
+  mortgage balance, remaining interest and principal, monthly payment,
+  parts (tracks), last month's mortgage payments in the cashflow, and
+  potential savings with RiseUp's mortgage product. Backed by
+  `/api/external/mortgages`.
+- New tool: `get_current_bank_balances_data` (`balances:read`) — current
+  balance per bank account with its last-updated time. Backed by
+  `/api/external/balances/current`.
+- New tool: `get_historical_bank_balances_data` (`balances:read`) — daily
+  balances per account over the last 1–90 days with min / max / average.
+  Backed by `/api/external/balances/history`.
+- New tool: `get_benchmarks_data` (`benchmarks:read`, a new scope) —
+  spending on eating out, groceries and electricity compared with similar
+  customers. Backed by `/api/external/benchmarks`.
+- Reference docs for every new endpoint under `docs/reference/`.
+- `get_transactions` now returns, per transaction:
+  - `expenseType` — RiseUp's system-assigned expense type (independent of
+    customer recategorization).
+  - `isExcluded` — whether the transaction is excluded from the cashflow
+    calculation.
+  - `sequenceName` — the customer's name/comment for the recurring sequence
+    the transaction belongs to.
+  - `transactionCustomerComment` — the customer's comment on the transaction.
+  - `paymentAppComment` / `paymentAppAddressee` — memo and counterparty of
+    payment-app transfers (e.g. Bit, PayBox).
+- `get_transactions` accepts `maxTransactions` (any positive integer,
+  default 10000) to return only the latest N matching transactions by
+  `transactionDate`.
+- Free-text fields are sanitized server-side (HTML/code symbols stripped,
+  control/invisible characters removed, capped at 40 characters).
+- New [transactions reference](./docs/reference/transactions.md) doc
+  covering filters, ordering, every response field and sanitization.
+
+### Changed
+
+- `get_transactions` no longer returns bank-side credit-card bill payments
+  (the individual card purchases they cover are already returned), so totals
+  aren't double counted.
+- `get_transactions` results are now ordered latest first by
+  `transactionDate`.
+
 ## [0.3.0] - 2026-07-19
 
 ### Added

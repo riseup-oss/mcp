@@ -33,6 +33,15 @@ X-Riseup-Token-Ref: 9a8b7c6d5e4f3a2b
 
 To fix: revoke the token, mint a new one with the required scope checked. We can't add scopes to an existing token by design — it would defeat the audit trail.
 
+The scope each MCP tool needs:
+
+| Scope | Tools |
+|---|---|
+| `budget:read` | `get_budget`, `get_transactions` |
+| `balances:read` | `get_current_bank_balances_data`, `get_historical_bank_balances_data` |
+| `mortgages:read` | `get_mortgages_data` |
+| `benchmarks:read` | `get_benchmarks_data` |
+
 ## `429 Too Many Requests`
 
 You hit the rate limit. See [rate-limits](./rate-limits.md) for the details.
