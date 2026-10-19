@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] - 2026-10-19
+
+### Security
+
+- Upgraded `@modelcontextprotocol/sdk` to 1.32.1, clearing all open
+  advisories in the installed dependency tree, including a critical
+  IP-spoofing issue in `proxy-addr` (GHSA-jqcg-44mw-7w3h). The affected
+  packages belong to the SDK's HTTP transport, which this stdio server
+  never loads, so none were exploitable here.
+
+### Changed
+
+- The MCP server now reports its correct version to clients (it was
+  still reporting `0.2.0`).
+
+### Notes
+
+- Some transitive dependencies of the SDK declare Node 20+. The server
+  still runs on Node 18, but `npm install` may print an `EBADENGINE`
+  warning there.
+
 ## [0.3.0] - 2026-07-19
 
 ### Added

@@ -6,7 +6,7 @@ import { registerTransactionsTool } from './tools/transactions.js';
 
 const server = new McpServer({
   name: 'riseup-mcp',
-  version: '0.2.0',
+  version: '0.3.1',
 });
 
 registerBudgetTool(server);
