@@ -44,6 +44,6 @@
     "typescript": "5.9.3"
   },
   "overrides": {
-    "hono": ">=4.13.7"
+    "hono": "^4.13.7"
   }
 }
