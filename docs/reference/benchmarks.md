@@ -21,6 +21,12 @@ Benchmarks exist for these spend areas:
 | `eating_out` | אוכל בחוץ (eating out) |
 | `economy` | כלכלה (groceries / household) |
 | `electricity` | חשמל (electricity) |
+| `insurance` | ביטוח (insurance) |
+| `mortgage` | משכנתא (mortgage) |
+| `loan` | הלוואה (loans) |
+| `communication` | תקשורת (phone, internet, TV) |
+| `car` | רכב (car) |
+| `public_transport` | תחבורה ציבורית (public transport) |
 
 Not every customer has a benchmark in every area.
 
@@ -60,7 +66,7 @@ One entry per spend area with a benchmark — a missing area means no benchmark 
 
 | Key | Type | Notes |
 |---|---|---|
-| `spendArea` | string | `eating_out`, `economy` or `electricity` |
+| `spendArea` | string | One of the spend areas listed above |
 | `category` | string | The spend area's Hebrew category name |
 | `customerSpend` | number | Your typical monthly spend in this area over the last 6 months (ILS) |
 | `customerSpendPercentile` | number | The % of similar customers who spend **less** than you. `65` → you spend more than 65% of them; `18` → you spend less than 82% of them. |
@@ -80,5 +86,5 @@ One entry per spend area with a benchmark — a missing area means no benchmark 
 
 See [the errors page](../errors.md) for the full catalog. The endpoint-specific ones:
 
-- **`400`** if `spendAreas` contains a value other than `eating_out`, `economy` or `electricity`.
+- **`400`** if `spendAreas` contains a value that isn't one of the spend areas listed above.
 - **`401`** / **`403`** / **`429`** as documented in the auth and rate-limit pages — a `403` here usually means your token was created without `benchmarks:read`.

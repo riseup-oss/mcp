@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-10-26
+
+### Added
+
+- `get_benchmarks_data` covers six more spend areas: `insurance` (ביטוח),
+  `mortgage` (משכנתא), `loan` (הלוואה), `communication` (תקשורת), `car` (רכב)
+  and `public_transport` (תחבורה ציבורית). They can be passed in `spendAreas`
+  and are returned when the customer has a benchmark in them.
+
+### Changed
+
+- Upgraded `zod` from 3.25.76 to 4.6.7 (the MCP SDK supports both). Tool
+  behavior is unchanged: the same inputs are accepted and rejected, and custom
+  validation messages are the same. Two visible differences: tool input
+  schemas no longer include `"additionalProperties": false` (unknown
+  arguments were already ignored, and still are), and zod's built-in
+  validation errors are worded differently (e.g. "Too small: expected number
+  to be >=1" instead of "Number must be greater than or equal to 1").
+
+### Security
+
+- Dependency updates from `npm audit fix`: `body-parser` 2.4.0, `fast-uri`
+  3.1.9 and `iconv-lite` 0.7.3 (transitive dependencies of the SDK).
+  `npm audit --omit=dev` reports no vulnerabilities.
+
 ## [0.4.0] - 2026-10-19
 
 ### Added
