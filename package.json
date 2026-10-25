@@ -1,6 +1,6 @@
 {
   "name": "@riseup-oss/mcp",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Official MCP server for RiseUp — programmatic read-only access to your own cashflow data from Claude Desktop, Base44, the Claude Agent SDK, and other MCP clients.",
   "license": "MIT",
   "type": "module",
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.32.1",
-    "zod": "3.25.76"
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@types/jest": "30.0.0",

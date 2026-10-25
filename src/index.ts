@@ -9,7 +9,7 @@ import { registerBenchmarksTool } from './tools/benchmarks.js';
 
 const server = new McpServer({
   name: 'riseup-mcp',
-  version: '0.4.0',
+  version: '0.5.0',
 });
 
 registerBudgetTool(server);

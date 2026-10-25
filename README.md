@@ -95,7 +95,7 @@ const claude = new Claude({
 | `get_mortgages_data` | `mortgages:read` | Get the customer's mortgage: remaining balance, interest and principal, monthly payment, parts (tracks), last month's mortgage payments in the cashflow, and potential savings with RiseUp's mortgage product. See the [mortgages reference](./docs/reference/mortgages.md). |
 | `get_current_bank_balances_data` | `balances:read` | Get the current balance of each bank account, with when it was last updated. See the [current balances reference](./docs/reference/current-balances.md). |
 | `get_historical_bank_balances_data` | `balances:read` | Get daily bank balances over the last 1–90 days per account, with min / max / average. See the [historical balances reference](./docs/reference/historical-balances.md). |
-| `get_benchmarks_data` | `benchmarks:read` | Compare the customer's spending on eating out, groceries (כלכלה) and electricity with similar RiseUp customers. See the [benchmarks reference](./docs/reference/benchmarks.md). |
+| `get_benchmarks_data` | `benchmarks:read` | Compare the customer's spending on eating out, groceries (כלכלה), electricity, insurance, mortgage, loans, communication, car and public transport with similar RiseUp customers. See the [benchmarks reference](./docs/reference/benchmarks.md). |
 
 The balance tools need a token with the `balances:read` scope, `get_mortgages_data` needs `mortgages:read` and `get_benchmarks_data` needs `benchmarks:read`; `get_budget` and `get_transactions` work with `budget:read`. More tools (`get_cashflow`) coming in future releases.
 
