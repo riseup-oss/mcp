@@ -30,8 +30,8 @@ Visit RiseUp's [developer tokens page](https://input.riseup.co.il/developer/toke
 
 | Scope | Shown on the page as | Enables |
 |---|---|---|
-| `budget:read` | תקציב | `get_budget`, `get_transactions` |
-| `balances:read` | יתרות בנק | `get_current_bank_balances_data`, `get_historical_bank_balances_data` |
+| `budget:read` | תקציב | `get_budget`, `get_transactions`, `get_future_bank_balances_prediction` (together with `balances:read`) |
+| `balances:read` | יתרות בנק | `get_current_bank_balances_data`, `get_historical_bank_balances_data`, `get_future_bank_balances_prediction` (together with `budget:read`) |
 | `mortgages:read` | משכנתא | `get_mortgages_data` |
 | `benchmarks:read` | השוואה ללקוחות דומים | `get_benchmarks_data` |
 
@@ -86,7 +86,7 @@ const claude = new Claude({
 | `RISEUP_PAT` | yes | — | Your `riseup_pat_…` Personal Access Token |
 | `RISEUP_API_BASE` | no | `https://input.riseup.co.il` | Override for staging / dev environments |
 
-## Tools (v0.4)
+## Tools (v0.6)
 
 | Tool | Scope | Description |
 |---|---|---|
@@ -95,9 +95,10 @@ const claude = new Claude({
 | `get_mortgages_data` | `mortgages:read` | Get the customer's mortgage: remaining balance, interest and principal, monthly payment, parts (tracks), last month's mortgage payments in the cashflow, and potential savings with RiseUp's mortgage product. See the [mortgages reference](./docs/reference/mortgages.md). |
 | `get_current_bank_balances_data` | `balances:read` | Get the current balance of each bank account, with when it was last updated. See the [current balances reference](./docs/reference/current-balances.md). |
 | `get_historical_bank_balances_data` | `balances:read` | Get daily bank balances over the last 1–90 days per account, with min / max / average. See the [historical balances reference](./docs/reference/historical-balances.md). |
+| `get_future_bank_balances_prediction` | `balances:read` + `budget:read` | Predict each bank account's balance at the end of a future date (`futureDateForPrediction`, YYYY-MM-DD, up to the end of the next cashflow month), from the current balance, the transactions to be billed until then and the predicted fixed expenses and incomes. See the [future balances reference](./docs/reference/future-balances.md). |
 | `get_benchmarks_data` | `benchmarks:read` | Compare the customer's spending on eating out, groceries (כלכלה), electricity, insurance, mortgage, loans, communication, car and public transport with similar RiseUp customers. See the [benchmarks reference](./docs/reference/benchmarks.md). |
 
-The balance tools need a token with the `balances:read` scope, `get_mortgages_data` needs `mortgages:read` and `get_benchmarks_data` needs `benchmarks:read`; `get_budget` and `get_transactions` work with `budget:read`. More tools (`get_cashflow`) coming in future releases.
+The balance tools need a token with the `balances:read` scope (`get_future_bank_balances_prediction` needs `budget:read` as well), `get_mortgages_data` needs `mortgages:read` and `get_benchmarks_data` needs `benchmarks:read`; `get_budget` and `get_transactions` work with `budget:read`. More tools (`get_cashflow`) coming in future releases.
 
 ## Documentation
 
@@ -112,6 +113,7 @@ Longer-form docs live in [`docs/`](./docs):
 - [Mortgages reference](./docs/reference/mortgages.md) — mortgage details, cashflow payments, savings potential
 - [Current balances reference](./docs/reference/current-balances.md) — current balance per bank account
 - [Historical balances reference](./docs/reference/historical-balances.md) — daily balances over up to 90 days
+- [Future balances reference](./docs/reference/future-balances.md) — predicted balance per bank account at a future date
 - [Benchmarks reference](./docs/reference/benchmarks.md) — spending compared with similar customers
 
 ## Security

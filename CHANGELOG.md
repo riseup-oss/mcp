@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-11-01
+
+### Added
+
+- New tool: `get_future_bank_balances_prediction` — predicts each bank
+  account's balance at the end of a future date (`futureDateForPrediction`,
+  `YYYY-MM-DD`, from today until the end of the next cashflow month), from the
+  current balance, the transactions to be billed until then, and the fixed
+  expenses and incomes predicted to arrive. Returns the known and predicted
+  transactions behind the prediction and a per-credit-card total. Needs a
+  token with both `balances:read` and `budget:read`. Customers with rolling
+  credit on a credit card aren't supported yet and get an empty list. See the
+  [future balances reference](./docs/reference/future-balances.md).
+
 ## [0.5.0] - 2026-10-26
 
 ### Added
