@@ -54,7 +54,7 @@ Restart Claude Desktop. Then ask:
 
 Claude will call the `get_budget` tool, which fetches your budget through the same API and returns the result.
 
-With the matching scopes on your token, you can also ask things like "What's my bank balance?" (`balances:read`), "How much is left on my mortgage?" (`mortgages:read`), or "Do I spend more on eating out than similar families?" (`benchmarks:read`).
+With the matching scopes on your token, you can also ask things like "What's my bank balance?" (`balances:read`), "How much is left on my mortgage?" (`mortgages:read`), "Do I spend more on eating out than similar families?" (`benchmarks:read`), or "What will my balance be on the 15th?" (`balances:read` and `budget:read`).
 
 ## What's next
 

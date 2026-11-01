@@ -3,6 +3,7 @@ import { type RiseupClientConfig } from '../src/client.js';
 import { fetchMortgagesData } from '../src/tools/mortgages.js';
 import { fetchCurrentBankBalances, fetchHistoricalBankBalances } from '../src/tools/balances.js';
 import { fetchBenchmarks } from '../src/tools/benchmarks.js';
+import { fetchFutureBankBalancesPrediction } from '../src/tools/future-balances.js';
 
 const VALID_TOKEN = 'riseup_pat_TEST_FIXTURE_not_a_real_token';
 const CONFIG: RiseupClientConfig = {
@@ -70,5 +71,15 @@ describe('fetchBenchmarks', () => {
     const fetchSpy = mockFetch({ benchmarks: [] });
     await fetchBenchmarks([], CONFIG);
     expect(fetchSpy.mock.calls[0]?.[0]).toBe('http://localhost:3000/api/external/benchmarks');
+  });
+});
+
+describe('fetchFutureBankBalancesPrediction', () => {
+  it('calls /api/external/future-balances with futureDateForPrediction', async () => {
+    const fetchSpy = mockFetch({ accounts: [] });
+    await expect(fetchFutureBankBalancesPrediction('2026-11-20', CONFIG)).resolves.toEqual({ accounts: [] });
+    expect(fetchSpy.mock.calls[0]?.[0]).toBe(
+      'http://localhost:3000/api/external/future-balances?futureDateForPrediction=2026-11-20',
+    );
   });
 });
