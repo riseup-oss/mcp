@@ -5,6 +5,10 @@ updates:
     schedule:
       interval: weekly
     versioning-strategy: increase
+    ignore:
+      # ts-jest peer-requires typescript <7; revisit when ts-jest supports TS 7
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
     groups:
       dev-dependencies:
         dependency-type: development
