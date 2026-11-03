@@ -10,7 +10,7 @@ import { registerFutureBalancesTool } from './tools/future-balances.js';
 
 const server = new McpServer({
   name: 'riseup-mcp',
-  version: '0.6.0',
+  version: '0.7.0',
 });
 
 registerBudgetTool(server);

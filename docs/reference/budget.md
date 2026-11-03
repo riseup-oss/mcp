@@ -55,7 +55,6 @@ The exact JSON shape may evolve as we tighten the public surface. As of today th
 | `customerId` | number | Your RiseUp account ID |
 | `budgetDate` | string | The month this budget covers (`YYYY-MM`) |
 | `lastUpdatedAt` | string (ISO 8601) | When this budget last changed |
-| `cashflowHash` | string | A stable hash of the budget contents. If two responses have the same hash, the contents are identical — useful for client-side caching. |
 | `envelopes` | array | One entry per budget envelope (category) — see below |
 
 Each entry in `envelopes` has:
@@ -64,9 +63,11 @@ Each entry in `envelopes` has:
 |---|---|---|
 | `id` | string | Stable envelope ID |
 | `type` | string | One of `fixed`, `trackingCategory`, `variable`, `variableIncome`, `riseupGoal` |
-| `originalAmount` | number | Planned amount for the month (positive = income, negative = expense) |
-| `balancedAmount` | number | Actual amount after the month closes |
-| `balanceDate` | string (ISO 8601) | When this envelope's balance was last reconciled |
+| `originalAmount` | number \| null | Planned amount for the month (positive = expense, negative = income). On `trackingCategory`, the category's target; on `fixed`, the predicted amount; on `riseupGoal`, the goal amount; `null` on `variable` and `variableIncome`, which have no plan (`null` means no plan, not a target of `0`) |
+| `isCustomPrediction` | boolean | `trackingCategory` only: `true` if the customer set the target in `originalAmount`, `false` if RiseUp estimated it from the customer's history |
+| `balancedAmount` | number \| null | Deprecated, kept for compatibility. Use `originalAmount` for the plan and `actuals` for what happened. It isn't updated from transactions: it equals `originalAmount` on `fixed` and is `0` on `trackingCategory` |
+| `balanceDate` | string (`YYYY-MM-DD` on `fixed`, ISO 8601 datetime on `trackingCategory`) | When RiseUp stops waiting for transactions in this envelope. On `fixed`, the date by which the payment is expected (with no `actuals` and this date before `lastUpdatedAt`, the item didn't arrive this month); on `trackingCategory`, shortly after the week or month ends |
+| `details` | object | `trackingCategory` only: `trackingCategory.name`, `trackingCategory.trackingCategoryType` (`saving` for the savings category) and `trackingCategory.frequency` (`monthly` or `weekly`); weekly categories come as one envelope per week, with `startDate`, `endDate` (exclusive) and `weeklyIndex`. The stored name `כלכלה` is shown in the app as `סופר`, and `__saving-hidden-category__` as `השקעה וחיסכון` |
 
 Don't assume any specific ordering of envelopes. Sort or filter by `type` on your side if you need a particular slice.
 
