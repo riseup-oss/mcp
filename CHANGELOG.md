@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-11-03
+
+### Changed
+
+- `get_budget` tool description and the [budget reference](./docs/reference/budget.md)
+  explain the existing envelope fields: `originalAmount` is a tracking
+  category's target (and the predicted amount on `fixed`), `isCustomPrediction`
+  says whether the customer or RiseUp set it, and a transaction's
+  `originalAmount` is the amount in the purchase's original currency.
+  The sign convention is corrected to match the API: an envelope's
+  `originalAmount` is positive for expenses and negative for incomes, and
+  `billingAmount` / `incomeAmount` on transactions are always positive.
+  Tracking-category envelopes now document `details.trackingCategory` (name,
+  type, frequency) and the week of a weekly category. No fields were added or
+  renamed.
+- The budget reference no longer lists `cashflowHash`, which the API doesn't
+  return.
+
+### Deprecated
+
+- Envelope `balancedAmount`: it isn't updated from actual transactions. Use
+  `originalAmount` for the plan and `actuals` for what happened.
+
 ## [0.6.0] - 2026-11-01
 
 ### Added
