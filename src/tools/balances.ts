@@ -22,7 +22,7 @@ export function registerBalancesTools(server: McpServer): void {
   server.registerTool(
     'get_current_bank_balances_data',
     {
-      description: `Get the current balance of each of the customer's bank accounts, with when it was last updated. Use this when the user asks how much money they have, or about their current bank balance / overdraft. For balances over time use \`get_historical_bank_balances_data\`.
+      description: `Get the current balance of each of the customer's bank accounts, with when it was last updated and the account's approved overdraft limit (מסגרת אשראי בעו"ש). Use this when the user asks how much money they have, about their current bank balance / overdraft, what their overdraft limit is, or how much of it they can still use. For balances over time use \`get_historical_bank_balances_data\`.
 
 No input parameters.
 
@@ -33,13 +33,18 @@ Response shape:
 ${ACCOUNT_FIELDS_DOC}
       balance: number,                       // current balance (ILS); negative means overdraft
       lastUpdated: ISO datetime,             // when this balance was last updated from the bank
+      overdraftLimit: number | null,         // approved overdraft limit (ILS) — how far below zero the account may go, as a positive amount. 0 = the account has no overdraft limit. null = unknown (e.g. the bank doesn't provide it): don't assume any limit
+      availableOverdraft: number | null,     // how much of the overdraft limit can still be used at the current balance (ILS): the full limit while the balance is 0 or positive, the limit minus the overdraft once negative, 0 once the balance reaches or passes the limit. null when overdraftLimit is null
+      overdraftLimitUpdatedAt: "YYYY-MM-DD" | null, // the day the overdraft limit was taken from the bank; null when overdraftLimit is null
     },
     ...
   ],
   _meta: { source: "riseup-external-api", tokenRef: string }
 }
 
-Balances come from the bank connection, so an account whose connection stopped updating keeps its last known balance. Always mention when each balance was last updated, and point out balances that are more than a couple of days old.`,
+Balances come from the bank connection, so an account whose connection stopped updating keeps its last known balance. Always mention when each balance was last updated, and point out balances that are more than a couple of days old.
+
+Overdraft: the money the customer can still spend from an account before hitting its limit is balance + availableOverdraft while the balance is positive, and availableOverdraft once it's negative. A negative balance with availableOverdraft 0 means the account is at or past its limit. The limit may be from a different day than the balance — mention overdraftLimitUpdatedAt when it's more than a few days old. When overdraftLimit is null, say the limit is unknown rather than treating it as 0 or as no limit.`,
       inputSchema: {},
     },
     async () => jsonToolResult(await fetchCurrentBankBalances(loadConfigFromEnv())),

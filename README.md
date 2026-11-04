@@ -93,7 +93,7 @@ const claude = new Claude({
 | `get_budget` | `budget:read` | Get the customer's budget for a given month. Accepts `YYYY-MM`, `current`, or `previous`. Returns envelopes (categories) with planned amounts and their actual transactions. |
 | `get_transactions` | `budget:read` | Get individual cashflow transactions filtered by `cashflowMonth` (YYYY-MM), `transactionDate` (YYYY-MM-DD), or `businessName` (case-insensitive substring), latest first. Filters combine with AND; `maxTransactions` (default 10000) keeps only the latest N. Each transaction includes its category, expense type, exclusion flag, and your comments / payment-app memo. See the [transactions reference](./docs/reference/transactions.md). |
 | `get_mortgages_data` | `mortgages:read` | Get the customer's mortgage: remaining balance, interest and principal, monthly payment, parts (tracks), last month's mortgage payments in the cashflow, and potential savings with RiseUp's mortgage product. See the [mortgages reference](./docs/reference/mortgages.md). |
-| `get_current_bank_balances_data` | `balances:read` | Get the current balance of each bank account, with when it was last updated. See the [current balances reference](./docs/reference/current-balances.md). |
+| `get_current_bank_balances_data` | `balances:read` | Get the current balance of each bank account, with when it was last updated, its approved overdraft limit and how much of it is still available. See the [current balances reference](./docs/reference/current-balances.md). |
 | `get_historical_bank_balances_data` | `balances:read` | Get daily bank balances over the last 1–90 days per account, with min / max / average. See the [historical balances reference](./docs/reference/historical-balances.md). |
 | `get_future_bank_balances_prediction` | `balances:read` + `budget:read` | Predict each bank account's balance at the end of a future date (`futureDateForPrediction`, YYYY-MM-DD, up to the end of the next cashflow month), from the current balance, the transactions to be billed until then and the predicted fixed expenses and incomes. See the [future balances reference](./docs/reference/future-balances.md). |
 | `get_benchmarks_data` | `benchmarks:read` | Compare the customer's spending on eating out, groceries (כלכלה), electricity, insurance, mortgage, loans, communication, car and public transport with similar RiseUp customers. See the [benchmarks reference](./docs/reference/benchmarks.md). |
@@ -111,7 +111,7 @@ Longer-form docs live in [`docs/`](./docs):
 - [Budget reference](./docs/reference/budget.md) — the three budget endpoints in detail
 - [Transactions reference](./docs/reference/transactions.md) — filters, ordering, response fields, free-text sanitization
 - [Mortgages reference](./docs/reference/mortgages.md) — mortgage details, cashflow payments, savings potential
-- [Current balances reference](./docs/reference/current-balances.md) — current balance per bank account
+- [Current balances reference](./docs/reference/current-balances.md) — current balance and overdraft limit per bank account
 - [Historical balances reference](./docs/reference/historical-balances.md) — daily balances over up to 90 days
 - [Future balances reference](./docs/reference/future-balances.md) — predicted balance per bank account at a future date
 - [Benchmarks reference](./docs/reference/benchmarks.md) — spending compared with similar customers
