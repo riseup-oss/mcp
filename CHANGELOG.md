@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2026-11-04
+
+### Added
+
+- `get_current_bank_balances_data` returns each account's approved overdraft
+  limit (מסגרת אשראי בעו"ש): `overdraftLimit` (`0` = no limit, `null` =
+  unknown), `availableOverdraft` (how much of the limit can still be used at
+  the current balance) and `overdraftLimitUpdatedAt` (`YYYY-MM-DD`, the day
+  the limit was taken from the bank). See the
+  [current balances reference](./docs/reference/current-balances.md#overdraft).
+
 ## [0.7.0] - 2026-11-03
 
 ### Changed
