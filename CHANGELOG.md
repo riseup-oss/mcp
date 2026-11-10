@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-11-10
+
+### Added
+
+- New tools `get_savings_data` and `get_investments_data` (`savings-investments:read`,
+  a new scope shown on the tokens page as חסכונות והשקעות).
+  - `get_savings_data` returns your bank savings — deposits and savings plans —
+    with their balance, interest rates and linkage, tiers (step-up or exit point
+    rates), start / end dates, the earliest withdrawal date (`hasExitPoints`) and
+    the amount expected at the end. See the [savings reference](./docs/reference/savings.md).
+  - `get_investments_data` returns your securities accounts and their holdings —
+    units, average buying price and current value. See the
+    [investments reference](./docs/reference/investments.md).
+  Both read the data of your latest Open Banking scrape. When fetching a bank's
+  savings or securities fails, its last fetched data is kept, and each item's
+  `createdAt` tells when it was fetched. They cover only the banks connected to
+  RiseUp - savings and investments held elsewhere (other banks, investment
+  houses, קרן השתלמות, קופות גמל) aren't included. Existing tokens don't include
+  the new scope; create a new token to use these tools.
+
 ## [0.8.0] - 2026-11-04
 
 ### Added

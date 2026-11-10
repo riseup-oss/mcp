@@ -34,6 +34,7 @@ Visit RiseUp's [developer tokens page](https://input.riseup.co.il/developer/toke
 | `balances:read` | יתרות בנק | `get_current_bank_balances_data`, `get_historical_bank_balances_data`, `get_future_bank_balances_prediction` (together with `budget:read`) |
 | `mortgages:read` | משכנתא | `get_mortgages_data` |
 | `benchmarks:read` | השוואה ללקוחות דומים | `get_benchmarks_data` |
+| `savings-investments:read` | חסכונות והשקעות | `get_savings_data`, `get_investments_data` |
 
 A tool called without its scope fails with a `403` that names the missing scope. Scopes can't be added to an existing token — to use more tools later, create a new token with the scopes you need.
 
@@ -97,8 +98,10 @@ const claude = new Claude({
 | `get_historical_bank_balances_data` | `balances:read` | Get daily bank balances over the last 1–90 days per account, with min / max / average. See the [historical balances reference](./docs/reference/historical-balances.md). |
 | `get_future_bank_balances_prediction` | `balances:read` + `budget:read` | Predict each bank account's balance at the end of a future date (`futureDateForPrediction`, YYYY-MM-DD, up to the end of the next cashflow month), from the current balance, the transactions to be billed until then and the predicted fixed expenses and incomes. See the [future balances reference](./docs/reference/future-balances.md). |
 | `get_benchmarks_data` | `benchmarks:read` | Compare the customer's spending on eating out, groceries (כלכלה), electricity, insurance, mortgage, loans, communication, car and public transport with similar RiseUp customers. See the [benchmarks reference](./docs/reference/benchmarks.md). |
+| `get_savings_data` | `savings-investments:read` | Get the customer's bank savings (deposits and savings plans): balance, rates and linkage, dates, exit points and the amount expected at the end. See the [savings reference](./docs/reference/savings.md). |
+| `get_investments_data` | `savings-investments:read` | Get the customer's securities accounts with their holdings (stocks, funds, index trackers, bonds): units, average buying price and current value. See the [investments reference](./docs/reference/investments.md). |
 
-The balance tools need a token with the `balances:read` scope (`get_future_bank_balances_prediction` needs `budget:read` as well), `get_mortgages_data` needs `mortgages:read` and `get_benchmarks_data` needs `benchmarks:read`; `get_budget` and `get_transactions` work with `budget:read`. More tools (`get_cashflow`) coming in future releases.
+The balance tools need a token with the `balances:read` scope (`get_future_bank_balances_prediction` needs `budget:read` as well), `get_mortgages_data` needs `mortgages:read`, `get_benchmarks_data` needs `benchmarks:read`, `get_savings_data` and `get_investments_data` need `savings-investments:read`; `get_budget` and `get_transactions` work with `budget:read`. More tools (`get_cashflow`) coming in future releases.
 
 ## Documentation
 
@@ -115,6 +118,8 @@ Longer-form docs live in [`docs/`](./docs):
 - [Historical balances reference](./docs/reference/historical-balances.md) — daily balances over up to 90 days
 - [Future balances reference](./docs/reference/future-balances.md) — predicted balance per bank account at a future date
 - [Benchmarks reference](./docs/reference/benchmarks.md) — spending compared with similar customers
+- [Savings reference](./docs/reference/savings.md) — deposits and savings plans: balance, rates, dates and exit points
+- [Investments reference](./docs/reference/investments.md) — securities accounts and their holdings
 
 ## Security
 

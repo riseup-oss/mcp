@@ -6,7 +6,7 @@ Get from zero to your first authenticated call against the RiseUp API in about f
 
 1. Visit https://input.riseup.co.il/developer/tokens.
 2. Click **Create new token** and give it a label (e.g. `Claude Desktop on my laptop`).
-3. Select the scopes the token should have: `budget:read` (budget and transactions — needed for the example below), `balances:read` (bank balances), `mortgages:read` (mortgage data) and/or `benchmarks:read` (comparison with similar customers). See [scopes](./authentication.md#creating-a-token) for what each one gives access to. Then confirm.
+3. Select the scopes the token should have: `budget:read` (budget and transactions — needed for the example below), `balances:read` (bank balances), `mortgages:read` (mortgage data), `benchmarks:read` (comparison with similar customers) and/or `savings-investments:read` (savings and investments). See [scopes](./authentication.md#creating-a-token) for what each one gives access to. Then confirm.
 4. **Copy the token immediately.** It's shown only once. It looks like:
 
    ```
@@ -54,7 +54,7 @@ Restart Claude Desktop. Then ask:
 
 Claude will call the `get_budget` tool, which fetches your budget through the same API and returns the result.
 
-With the matching scopes on your token, you can also ask things like "What's my bank balance?" (`balances:read`), "How much is left on my mortgage?" (`mortgages:read`), "Do I spend more on eating out than similar families?" (`benchmarks:read`), or "What will my balance be on the 15th?" (`balances:read` and `budget:read`).
+With the matching scopes on your token, you can also ask things like "What's my bank balance?" (`balances:read`), "How much is left on my mortgage?" (`mortgages:read`), "Do I spend more on eating out than similar families?" (`benchmarks:read`), "When can I withdraw my deposits?" or "What's my stock portfolio worth?" (`savings-investments:read`), or "What will my balance be on the 15th?" (`balances:read` and `budget:read`).
 
 ## What's next
 
