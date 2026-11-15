@@ -8,10 +8,11 @@ import { registerBalancesTools } from './tools/balances.js';
 import { registerBenchmarksTool } from './tools/benchmarks.js';
 import { registerFutureBalancesTool } from './tools/future-balances.js';
 import { registerSavingsInvestmentsTools } from './tools/savings-investments.js';
+import { registerLoansTool } from './tools/loans.js';
 
 const server = new McpServer({
   name: 'riseup-mcp',
-  version: '0.9.0',
+  version: '0.10.0',
 });
 
 registerBudgetTool(server);
@@ -21,6 +22,7 @@ registerBalancesTools(server);
 registerBenchmarksTool(server);
 registerFutureBalancesTool(server);
 registerSavingsInvestmentsTools(server);
+registerLoansTool(server);
 
 const transport = new StdioServerTransport();
 await server.connect(transport);

@@ -6,6 +6,7 @@ import { fetchBenchmarks } from '../src/tools/benchmarks.js';
 import { fetchFutureBankBalancesPrediction } from '../src/tools/future-balances.js';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { fetchInvestmentsData, fetchSavingsData, registerSavingsInvestmentsTools } from '../src/tools/savings-investments.js';
+import { fetchLoansData, registerLoansTool } from '../src/tools/loans.js';
 import { jsonToolResult } from '../src/tools/tool-result.js';
 
 const VALID_TOKEN = 'riseup_pat_TEST_FIXTURE_not_a_real_token';
@@ -158,5 +159,24 @@ describe('get_savings_data / get_investments_data tool handlers', () => {
 
     expect(fetchSpy.mock.calls[0]?.[0]).toBe(`http://localhost:3000${path}`);
     expect(result).toEqual(jsonToolResult(body));
+  });
+});
+
+describe('get_loans_data', () => {
+  it('calls /api/external/loans with no query string and the Bearer token', async () => {
+    const fetchSpy = mockFetch({ loans: [] });
+    await expect(fetchLoansData(CONFIG)).resolves.toEqual({ loans: [] });
+    expect(fetchSpy).toHaveBeenCalledWith(
+      'http://localhost:3000/api/external/loans',
+      expect.objectContaining({
+        headers: expect.objectContaining({ Authorization: `Bearer ${VALID_TOKEN}` }),
+      }),
+    );
+  });
+
+  it('is registered under its documented name', () => {
+    const names: string[] = [];
+    registerLoansTool({ registerTool: (name: string) => names.push(name) } as unknown as McpServer);
+    expect(names).toEqual(['get_loans_data']);
   });
 });

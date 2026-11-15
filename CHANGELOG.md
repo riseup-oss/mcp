@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0] - 2026-11-15
+
+### Added
+
+- New tool `get_loans_data` (`loans:read`, a new scope shown on the tokens page
+  as הלוואות). It returns your loans with the amount left to pay, the
+  original amount, interest rate and linkage, start / end dates and, for banks
+  that send it, the next payment. Each item has a `type`: `LOAN` (also credit
+  card companies' loans and credit plans) or `OVERDRAFT_FRAMEWORK` (your
+  account's overdraft framework and its rates). Mortgages
+  (`get_mortgages_data`) aren't included. See the [loans reference](./docs/reference/loans.md).
+  It reads the data of your latest Open Banking scrape. When fetching from a
+  bank fails, its last fetched loans are kept, and each loan's `createdAt` tells
+  when it was fetched. It covers only the banks connected to RiseUp - loans
+  taken elsewhere aren't included. Existing tokens don't include the new scope;
+  create a new token to use this tool.
+
 ## [0.9.0] - 2026-11-10
 
 ### Added

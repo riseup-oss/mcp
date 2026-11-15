@@ -42,6 +42,7 @@ The scope each MCP tool needs:
 | `mortgages:read` | `get_mortgages_data` |
 | `benchmarks:read` | `get_benchmarks_data` |
 | `savings-investments:read` | `get_savings_data`, `get_investments_data` |
+| `loans:read` | `get_loans_data` |
 | `balances:read` **and** `budget:read` | `get_future_bank_balances_prediction` |
 
 ## `429 Too Many Requests`
