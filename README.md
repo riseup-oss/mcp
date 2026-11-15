@@ -35,6 +35,7 @@ Visit RiseUp's [developer tokens page](https://input.riseup.co.il/developer/toke
 | `mortgages:read` | משכנתא | `get_mortgages_data` |
 | `benchmarks:read` | השוואה ללקוחות דומים | `get_benchmarks_data` |
 | `savings-investments:read` | חסכונות והשקעות | `get_savings_data`, `get_investments_data` |
+| `loans:read` | הלוואות | `get_loans_data` |
 
 A tool called without its scope fails with a `403` that names the missing scope. Scopes can't be added to an existing token — to use more tools later, create a new token with the scopes you need.
 
@@ -100,8 +101,9 @@ const claude = new Claude({
 | `get_benchmarks_data` | `benchmarks:read` | Compare the customer's spending on eating out, groceries (כלכלה), electricity, insurance, mortgage, loans, communication, car and public transport with similar RiseUp customers. See the [benchmarks reference](./docs/reference/benchmarks.md). |
 | `get_savings_data` | `savings-investments:read` | Get the customer's bank savings (deposits and savings plans): balance, rates and linkage, dates, exit points and the amount expected at the end. See the [savings reference](./docs/reference/savings.md). |
 | `get_investments_data` | `savings-investments:read` | Get the customer's securities accounts with their holdings (stocks, funds, index trackers, bonds): units, average buying price and current value. See the [investments reference](./docs/reference/investments.md). |
+| `get_loans_data` | `loans:read` | Get the customer's loans and overdraft frameworks (not mortgages): amount left to pay, original amount, rate and linkage, dates and, for some banks, the next payment. See the [loans reference](./docs/reference/loans.md). |
 
-The balance tools need a token with the `balances:read` scope (`get_future_bank_balances_prediction` needs `budget:read` as well), `get_mortgages_data` needs `mortgages:read`, `get_benchmarks_data` needs `benchmarks:read`, `get_savings_data` and `get_investments_data` need `savings-investments:read`; `get_budget` and `get_transactions` work with `budget:read`. More tools (`get_cashflow`) coming in future releases.
+The balance tools need a token with the `balances:read` scope (`get_future_bank_balances_prediction` needs `budget:read` as well), `get_mortgages_data` needs `mortgages:read`, `get_benchmarks_data` needs `benchmarks:read`, `get_savings_data` and `get_investments_data` need `savings-investments:read`, `get_loans_data` needs `loans:read`; `get_budget` and `get_transactions` work with `budget:read`. More tools (`get_cashflow`) coming in future releases.
 
 ## Documentation
 
@@ -120,6 +122,7 @@ Longer-form docs live in [`docs/`](./docs):
 - [Benchmarks reference](./docs/reference/benchmarks.md) — spending compared with similar customers
 - [Savings reference](./docs/reference/savings.md) — deposits and savings plans: balance, rates, dates and exit points
 - [Investments reference](./docs/reference/investments.md) — securities accounts and their holdings
+- [Loans reference](./docs/reference/loans.md) — loans and overdraft frameworks: amount left to pay, rates, dates and next payment
 
 ## Security
 

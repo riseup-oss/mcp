@@ -33,6 +33,7 @@ When you create a token you choose its **scopes**:
 - **`mortgages:read`** — read access to your mortgage data.
 - **`benchmarks:read`** — read access to how your spending compares with similar customers.
 - **`savings-investments:read`** — read access to your bank savings (deposits and savings plans) and your investments (securities accounts and their holdings).
+- **`loans:read`** — read access to your loans and overdraft frameworks (not mortgages, which have their own scope).
 
 More scopes will be added as we expose additional endpoints. A token you create today with `budget:read` will keep working for the endpoints it covers; it doesn't need to be re-issued when new scopes become available.
 
