@@ -1,0 +1,5 @@
+# A version bump merged to master publishes to npm (see .github/workflows/release.yml)
+/package.json         @RevitalOren @alexrise111
+/package-lock.json    @RevitalOren @alexrise111
+/CHANGELOG.md         @RevitalOren @alexrise111
+/.github/             @RevitalOren @alexrise111
