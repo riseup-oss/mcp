@@ -119,6 +119,7 @@ jobs:
     needs: [check, publish]
     if: >-
       always() &&
+      needs.check.result == 'success' &&
       needs.check.outputs.should_release == 'true' &&
       (needs.publish.result == 'success' || needs.check.outputs.should_publish == 'false')
     runs-on: ubuntu-latest
@@ -131,7 +132,18 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
-      - run: |
+          fetch-depth: 0
+      - env:
+          PUBLISHED_IN_THIS_RUN: ${{ needs.check.outputs.should_publish }}
+        run: |
+          if [ "$PUBLISHED_IN_THIS_RUN" = true ]; then
+            target=$GITHUB_SHA
+          else
+            # Recovering a release for a version published earlier: tag the
+            # master commit that introduced it, which is what was built.
+            target=$(git log --first-parent -1 --format=%H -S"\"version\": \"$VERSION\"" -- package.json)
+            test -n "$target"
+          fi
           awk -v v="$VERSION" '
             index($0, "## [" v "]") == 1 { found = 1; next }
             found && /^## \[/ { exit }
@@ -139,6 +151,6 @@ jobs:
           ' CHANGELOG.md > release-notes.md
           test -s release-notes.md
           gh release create "v$VERSION" \
-            --target "$GITHUB_SHA" \
+            --target "$target" \
             --title "v$VERSION" \
             --notes-file release-notes.md
